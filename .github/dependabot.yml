@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Choisis le bon langage pour ton projet :
+  # - Pour Node.js (JavaScript/TypeScript) : "npm"
+  # - Pour Python : "pip"
+  # - Pour PHP : "composer"
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Paris"
+    # Ignore les grosses mises à jour qui risquent de casser le code
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

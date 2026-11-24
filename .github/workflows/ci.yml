@@ -1,0 +1,40 @@
+name: Tests Automatiques
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Verification du code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      # --- POUR NODE.JS ---
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm test
+
+      # --- POUR PYTHON (enlève les # pour activer) ---
+      # - name: Installation de Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
+      # - run: pip install -r requirements.txt
+      # - run: pytest
+
+      # --- POUR PHP (enlève les # pour activer) ---
+      # - name: Installation de PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: "8.3"
+      # - run: composer install
+      # - run: vendor/bin/phpunit
