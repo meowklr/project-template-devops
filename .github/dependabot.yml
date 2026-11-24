@@ -1,18 +1,28 @@
 version: 2
 updates:
-  # Choisis le bon langage pour ton projet :
-  # - Pour Node.js (JavaScript/TypeScript) : "npm"
-  # - Pour Python : "pip"
-  # - Pour PHP : "composer"
-  - package-ecosystem: "npm"
+  # Maintient à jour les GitHub Actions utilisées dans .github/workflows/
+  - package-ecosystem: "github-actions"
     directory: "/"
-    target-branch: "main"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "08:00"
       timezone: "Europe/Paris"
-    # Ignore les grosses mises à jour qui risquent de casser le code
+
+  # Dépendances du projet — adapte `package-ecosystem` à ta stack :
+  # npm, pip, composer, gomod, cargo, maven, gradle, nuget, bundler, docker, etc.
+  # Si ton projet a plusieurs stacks ou sous-dossiers, duplique ce bloc en changeant `directory`.
+  - package-ecosystem: "npm"
+    directory: "/"
+    # Par défaut Dependabot cible la branche principale du dépôt.
+    # Décommente la ligne suivante uniquement si tu veux cibler une autre branche :
+    # target-branch: "develop"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Paris"
+    # Ignore les mises à jour majeures (souvent cassantes)
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]

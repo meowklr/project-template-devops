@@ -1,10 +1,18 @@
-name: Tests Automatiques
+name: CI
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -12,29 +20,84 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Récupération du code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # --- POUR NODE.JS ---
-      - name: Installation de Node.js
+      # Ne garde qu'un seul bloc (ou adapte les commandes à ton projet).
+
+      # --- Node.js (JavaScript / TypeScript) ---
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+          cache: "npm"
       - run: npm ci
       - run: npm test
 
-      # --- POUR PYTHON (enlève les # pour activer) ---
-      # - name: Installation de Python
+      # --- Python ---
+      # - name: Setup Python
       #   uses: actions/setup-python@v5
       #   with:
       #     python-version: "3.12"
+      #     cache: "pip"
       # - run: pip install -r requirements.txt
       # - run: pytest
 
-      # --- POUR PHP (enlève les # pour activer) ---
-      # - name: Installation de PHP
+      # --- PHP ---
+      # - name: Setup PHP
       #   uses: shivammathur/setup-php@v2
       #   with:
       #     php-version: "8.3"
-      # - run: composer install
+      # - run: composer install --no-interaction --no-progress
       # - run: vendor/bin/phpunit
+
+      # --- Go ---
+      # - name: Setup Go
+      #   uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "1.23"
+      # - run: go test ./...
+
+      # --- Rust ---
+      # - name: Setup Rust
+      #   uses: dtolnay/rust-toolchain@stable
+      # - run: cargo test
+
+      # --- Java (Maven) ---
+      # - name: Setup Java
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: "temurin"
+      #     java-version: "21"
+      #     cache: "maven"
+      # - run: mvn test
+
+      # --- Docker ---
+      # - name: Build image
+      #   run: docker build .
+
+
+      # --- Go ---
+      # - name: Setup Go
+      #   uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "1.23"
+      # - run: go test ./...
+
+      # --- Rust ---
+      # - name: Setup Rust
+      #   uses: dtolnay/rust-toolchain@stable
+      # - run: cargo test
+
+      # --- Java (Maven) ---
+      # - name: Setup Java
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: "temurin"
+      #     java-version: "21"
+      #     cache: "maven"
+      # - run: mvn test
+
+      # --- Docker ---
+      # - name: Build image
+      #   run: docker build .
